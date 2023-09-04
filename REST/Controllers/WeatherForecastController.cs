@@ -37,7 +37,7 @@ public class WeatherForecastController : ControllerBase
     public async Task<ActionResult<WeatherForecastResponse>> Add(CreateWeatherForecastRequest weatherForecast)
     {
         var createdItem = await _weatherForecastRepository.Create(weatherForecast);
-        return Created($"/GetWeatherForecastById/{createdItem.Id}", createdItem));
+        return Created($"GetWeatherForecastById?id={createdItem.Id}", createdItem);
     }
 
     // Assignment 4
@@ -53,6 +53,7 @@ public class WeatherForecastController : ControllerBase
     {
         await _weatherForecastRepository.Delete(id);
 
+        // OK (200) is also valid here
         return NoContent();
     }
 }
