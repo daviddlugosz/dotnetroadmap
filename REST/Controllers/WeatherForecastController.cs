@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using REST.Core.Contracts;
+using REST.Core.Repositories;
 
 namespace REST.Controllers;
 
@@ -6,27 +8,19 @@ namespace REST.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
+    private readonly IWeatherForecastRepository _weatherForecastRepository;
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(IWeatherForecastRepository weatherForecastRepository, 
+        ILogger<WeatherForecastController> logger)
     {
+        _weatherForecastRepository = weatherForecastRepository;
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet("/GetWeatherForecasts")]
+    public async Task<IEnumerable<WeatherForecastResponse>> GetAll()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        return await _weatherForecastRepository.GetAll();
     }
 }
