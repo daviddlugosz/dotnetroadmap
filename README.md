@@ -149,3 +149,48 @@ public ActionResult DeleteBook(int id)
 3. Why is versioning important in a RESTful API?
 4. When would you use PUT vs POST in a RESTful API?
 5. How do you handle errors or invalid requests in a REST API?
+
+## Homework Assignment: Build a RESTful API for a Library System
+
+### Objective:
+Create a RESTful API using ASP.NET Core for a simple library management system that covers book and library user operations.
+
+### Requirements:
+
+1. **Models**:
+ - **Book**: 
+ - Id 
+ - Title 
+ - Author 
+ - Year 
+ - ISBN 
+ - BorrowedByUserId (nullable)
+ - **LibraryUser**: 
+ - Id 
+ - Name 
+ - Email 
+ - DateJoined 
+ - BorrowedBooks (list of borrowed book Ids)
+
+2. **Controllers**:
+ - **BooksController**:
+ - `GET` all books
+ - `GET` a single book by its Id
+ - `POST` a new book
+ - `PUT` to update an existing book
+ - `DELETE` a book by its Id
+ - Extra: `POST` to mark a book as borrowed and by whom
+ 
+ - **LibraryUsersController**:
+ - `GET` all library users
+ - `GET` a library user by their Id
+ - `POST` a new library user
+ - `PUT` to update an existing library user
+ - `DELETE` a library user by their Id
+ - Extra: `GET` all books borrowed by a library user
+
+3. **Status Codes**: Ensure that each action properly returns the right HTTP status code, as mentioned in the course material.
+
+4. **Data Store**: Use a static collection for both books and library users.
+
+5. **Testing**: Test your API endpoints using a tool like Postman or Swagger.
