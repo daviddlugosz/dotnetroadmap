@@ -158,6 +158,7 @@ Create a RESTful API using ASP.NET Core for a simple library management system t
 ### Requirements:
 
 1. **Models**:
+
 **Book**: 
  - Id 
  - Title 
@@ -165,6 +166,7 @@ Create a RESTful API using ASP.NET Core for a simple library management system t
  - Year 
  - ISBN 
  - BorrowedByUserId (nullable)
+
 **LibraryUser**: 
  - Id 
  - Name 
@@ -173,6 +175,7 @@ Create a RESTful API using ASP.NET Core for a simple library management system t
  - BorrowedBooks (list of borrowed book Ids)
 
 2. **Controllers**:
+
 **BooksController**:
  - `GET` all books
  - `GET` a single book by its Id
