@@ -256,3 +256,47 @@ To ensure your understanding, you should be able to answer the following:
 - How do you register a service for DI in an ASP.NET Core application?
 - How do you consume a registered service in a controller?
 - How does DI help in unit testing?
+
+## Homework: Implementing Dependency Injection in ASP.NET Core
+
+### Objective
+
+The purpose of this assignment is to demonstrate your understanding of Dependency Injection (DI) in ASP.NET Core. You will be tasked with creating different services and implementing them in a simple ASP.NET Core application.
+
+### Requirements
+
+1. **Set Up a New Project**: Start a new ASP.NET Core Web API project.
+
+2. **Define New Entities**:
+   - Create a simple `Product` class with properties: `Id`, `Name`, `Description`, and `Price`.
+   - Create a `Customer` class with properties: `Id`, `Name`, and `Email`.
+
+3. **Service Interfaces & Implementations**:
+   - Create a `IDataService<T>` generic interface with methods for `Add`, `GetAll`, and `GetById`.
+   - Implement two versions of the `IDataService<T>`:
+     - `InMemoryDataService<T>`: This will store entities in a List in memory.
+     - `MockedDataService<T>`: This will generate random mock data.
+
+4. **Controllers**:
+   - Create two controllers: `ProductsController` and `CustomersController`.
+   - Each controller should have endpoints for:
+     - Getting all entities.
+     - Getting a single entity by Id.
+     - Adding a new entity.
+   - Utilize Dependency Injection to inject the appropriate `IDataService<T>` implementation into each controller.
+
+5. **Configure Dependency Injection**:
+   - In the `ConfigureServices` method in `Startup.cs`, configure the DI container to use the `InMemoryDataService<T>` for one of the controllers and `MockedDataService<T>` for the other.
+
+6. **Testing**:
+   - Test the endpoints using a tool like Postman or Swagger (if integrated).
+   - Observe the different behaviors based on the service implementations.
+
+### Bonus
+
+1. **Switch Implementations**: Modify the `ConfigureServices` method to swap the service implementations for each controller. Observe the behavior change.
+   
+2. **Scoped Lifetimes**: Implement a counter in the `InMemoryDataService<T>` that increments with each call. Register this service with a scoped lifetime and observe its behavior. How does the count change with each new web request?
+
+3. **Extend Functionality**: Add methods in the `IDataService<T>` for updating and deleting entities. Implement this functionality in the controllers and the two service implementations.
+
