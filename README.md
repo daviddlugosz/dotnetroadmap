@@ -102,33 +102,18 @@ Just like in traditional ASP.NET Core apps, you can register services as singlet
 
 ASP.NET Core's Minimal APIs have several built-in services you can inject without registering them, such as `ILogger<T>`, `IConfiguration`, and `IHttpContextAccessor`.
 
+---
+### Text study material
+[Minimal APIs quick reference](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0)
+[Introduction to ASP.NET Core Minimal APIs](https://blog.jetbrains.com/dotnet/2023/04/25/introduction-to-asp-net-core-minimal-apis/)
+
+### Video study material
+[![.NET 7 Minimal API for Beginners 🚀 Full CRUD in 10 Minutes!](https://img.youtube.com/vi/KpdyvEO1Ii0/0.jpg)](https://www.youtube.com/watch?v=KpdyvEO1Ii0)
+
+---
+
 ## Practical Exercise: Weather Forecast Minimal API
-For this practical exercise, we'll be implementing Minimal API out of ASP.NET Core Weather Forecast example.
-
-**Setting Up the Data Model**
-
-```csharp
-public record WeatherForecast(DateTime Date, int TemperatureC, string Summary);` 
-```
-
-**Generate Sample Data**
-
-```csharp
-var rng = new Random();
-var forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast(
-    Date: DateTime.Now.AddDays(index),
-    TemperatureC: rng.Next(-20, 55),
-    Summary: summaries[rng.Next(summaries.Length)])
-).ToArray();` 
-```
-
-**Map Endpoints**
-
-```csharp
-app.MapGet("/weather", () => forecasts);` 
-```
-
-This maps an HTTP GET request to the "/weather" route to the generated sample data.
+For this practical exercise, implement Minimal API for Weather Forecast example with full CRUD functionality.
 
 ### Conclusion & Insights
 
@@ -144,10 +129,3 @@ To ensure your understanding, you should be able to answer the following:
 - Explain how routing works in the context of Minimal APIs.
 - How would you integrate middleware into a Minimal API project?
 - How can you inject services into your Minimal API handler methods?
-
-
-TODO:
--   study materials (links, videos)
--   refinement of excerise (make it as task for junior to do on his own, not just copy paste)
--   test code in this file
--   prepare code for this
