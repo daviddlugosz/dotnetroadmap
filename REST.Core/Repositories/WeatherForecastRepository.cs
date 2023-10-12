@@ -63,9 +63,36 @@ namespace REST.Core.Repositories
             };
         }
 
-        public async Task<IEnumerable<WeatherForecastResponse>> GetAll()
+        public async Task<IEnumerable<WeatherForecastResponse>> GetAll(int days, int? minTemp, int? maxTemp)
         {
-            var items = await _context.WeatherForecasts.ToListAsync();
+            var items = _context.WeatherForecasts
+                .Where(x => x.Date >= DateOnly.FromDateTime(DateTime.Now) &&
+                    x.Date < DateOnly.FromDateTime(DateTime.Now.AddDays(days)));
+
+            if (minTemp != null)
+            {
+                items = items.Where(x => x.TemperatureC >= minTemp);
+            }
+
+            if (maxTemp != null)
+            {
+                items = items.Where(x => x.TemperatureC <= maxTemp);
+            }
+
+            return items.Select(x => new WeatherForecastResponse
+            {
+                Id = x.Id,
+                Date = x.Date,
+                Summary = x.Summary,
+                TemperatureC = x.TemperatureC
+            });
+        }
+
+        public async Task<IEnumerable<WeatherForecastResponse>> GetForDate(DateTime date)
+        {
+            var items = await _context.WeatherForecasts
+                .Where(x => x.Date == DateOnly.FromDateTime(date))
+                .ToListAsync();
 
             return items.Select(x => new WeatherForecastResponse
             {
