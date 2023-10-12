@@ -137,6 +137,14 @@ For sensitive data like connection strings, API keys, etc., you should avoid sto
 
 1.  Enable secret storage by CLI command `dotnet  user-secrets init`
 2.  Use the `secrets.json` file for local development which you can access it in Visual Studio by right clicking project and selecting **Manage User Secrets**
+3.  Enable user secrets in `Program.cs`
+
+```csharp
+var configBuilder = new ConfigurationBuilder()
+	.AddUserSecrets<Program>(true);
+	
+configBuilder.Build();
+```
 
 `secrets.json` file is unlike `appsettings.json` file included in `.gitignore` default file for .NET solutions and is not used when running as Release.
 
@@ -188,6 +196,15 @@ If a configuration key exists in multiple providers, the last provider wins. The
 3.  User secrets (development only)
 4.  Environment variables
 5.  Command-line arguments
+
+---
+### Text study material
+[Configuration in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration)
+[Options Pattern in ASP.NET Core – Bind & Validate Configurations from appsettings.json](https://codewithmukesh.com/blog/options-pattern-in-aspnet-core/)
+
+### Video study material
+[![Appsettings.json in .NET: How to read and get a value](https://img.youtube.com/vi/UiqTDvIFJ3g/0.jpg)](https://www.youtube.com/watch?v=UiqTDvIFJ3g)
+[![Manage Secrets in DotNet 6](https://img.youtube.com/vi/WgtEQCEgFVU/0.jpg)](https://www.youtube.com/watch?v=WgtEQCEgFVU)
 
 ---
 ### Practical Configuration Example in ASP.NET Core
@@ -267,40 +284,34 @@ You should see the `ApplicationName` as `CommandLineConfigApp` (from the command
 ## Practical Exercise: Weather Forecast Enhancements
 
 
-**Add Configuration to `appsettings.json`**:
+### Step 1: Add Configuration to `appsettings.json`
 
 -   Add a section called `WeatherSettings` to your `appsettings.json`.
     
 -   Inside `WeatherSettings`, add the following properties:
     
-    -   `DefaultCity`: Set this to any city name, e.g., "Seattle".
-    -   `ForecastCount`: Set this to 5.
-    
-    ```json
-    "WeatherSettings": {
-        "DefaultCity": "Seattle",
-        "ForecastCount": 5
-    }
-    ```
+    -   `SummaryOverride`: Set this to any string, e.g., "This is summary string from configuration".
+    -   `ForecastCount`: Set this to 3.
 
-**Modify WeatherForecastController**:
+-   Bind this configuration to object
 
--   Inject `IConfiguration` into your controller.
+### Step 2: Modify WeatherForecastRepository**:
+
 -   Update the `Get` method to:
-    -   Read the `DefaultCity` from the configuration and attach it to each weather forecast item.
+    -   Read the `SummaryOverride` from the configuration and set it to Summary parameter of forecast object.
     -   Limit the number of forecast items returned based on the `ForecastCount` setting.
 
-**Test Your Changes**:
+### Step 3: Override Configuration by `appsettings.Development.json`
 
--   Run your application.
--   Use a tool (like Postman or a browser) to access the `/WeatherForecast` endpoint. Ensure the city is set correctly and the number of items matches the `ForecastCount`.
+-   Rewrite `ForecastCount` in `appsettings.Development.json` file to value 2
 
-**Override Configuration**:
+### Step 4: Override Configuration by secrets manager
 
--   Override the `ForecastCount` using an environment variable to return a different number of items.
-    -   For Windows: `setx WeatherSettings__ForecastCount "3"`
-    -   For Linux/macOS: `export WeatherSettings__ForecastCount=3`
--   Restart your application and access the `/WeatherForecast` endpoint again. Ensure it now returns the overridden count of items.
+-   Use secrets manager to override `SummaryOverride` to "This is summary string from configuration from secrets.json"
+
+### Step 5: Override Configuration by environment variable
+
+-   Override the `ForecastCount` using an environment variable to return 4 items
 
 ### Conclusion & Insights
 
@@ -314,9 +325,3 @@ To ensure your understanding, you should be able to answer the following:
 - How does ASP.NET Core decide which configuration source takes precedence when there are conflicts?
 - How would you secure sensitive configuration data, especially in a production environment?
 - What's the benefit of centralizing configurations in `appsettings.json` compared to hardcoding them?
-
-
-TODO:
--   study materials (links, videos)
--   refinement of excerise (make it as task for junior to do on his own, not just copy paste)
--   test code in this file, not sure you need to register providers...
