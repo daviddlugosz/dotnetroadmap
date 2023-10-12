@@ -1,5 +1,5 @@
 
-# # Minimal APIs in ASP.NET Core
+# Minimal APIs in ASP.NET Core
 
 ## Overview
 
@@ -105,34 +105,27 @@ ASP.NET Core's Minimal APIs have several built-in services you can inject withou
 ---
 ### Text study material
 [Minimal APIs quick reference](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0)
+
 [Introduction to ASP.NET Core Minimal APIs](https://blog.jetbrains.com/dotnet/2023/04/25/introduction-to-asp-net-core-minimal-apis/)
 
 ### Video study material
 [![.NET 7 Minimal API for Beginners 🚀 Full CRUD in 10 Minutes!](https://img.youtube.com/vi/KpdyvEO1Ii0/0.jpg)](https://www.youtube.com/watch?v=KpdyvEO1Ii0)
 
----
-
-## Practical Exercise: Weather Forecast Minimal API
-
-#### Step 1: Create CRUD Minimal API
-
-For this practical exercise, implement Minimal API for Weather Forecast example with full CRUD functionality.
-
-#### Step 2: Add Middleware
-
-Add Middleware that if response code is 200 OK changes it to 302 Found.
-
-### Conclusion & Insights
-
-ASP.NET Core's Minimal APIs offer a streamlined approach to building web services, emphasizing succinctness and clarity. Despite their lightweight nature, they seamlessly integrate with the foundational features of the framework, such as middleware and dependency injection. This combination ensures developers can craft efficient web APIs without compromising on functionality, extensibility, or best practices, demonstrating the evolving and adaptive nature of the ASP.NET Core platform.
-
-## Review & Questions
-Explain the understanding of Minimal API during code review session on your practical example.
-
-To ensure your understanding, you should be able to answer the following:
-
+## Questions to Gauge Understanding
 - How does a Minimal API differ from a traditional ASP.NET Core API?
 - How can you handle different HTTP methods in a Minimal API?
 - Explain how routing works in the context of Minimal APIs.
 - How would you integrate middleware into a Minimal API project?
 - How can you inject services into your Minimal API handler methods?
+---
+
+## Homework Assignment: Weather Forecast Minimal API
+
+#### Step 1: Create CRUD Minimal API
+
+For this practical exercise, implement Minimal API for the Weather Forecast example with full CRUD functionality.
+
+#### Step 2: Add Middleware
+
+Add Middleware that if the response code is 200 OK changes it to 302 Found.
+
