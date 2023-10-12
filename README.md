@@ -162,10 +162,12 @@ If "archives/latest" is accessed, it'll match the first route because `{year}` w
 ---
 ### Text study material
 [Exploring ASP.NET Routing in .NET Core 7](https://medium.com/@codezone/exploring-asp-net-routing-in-net-core-7-d98a56f9b863)
+
 [Routing in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-7.0/)
 
 ### Video study material
 [![Web API Routing in .NET 8 | Ep 7](https://img.youtube.com/vi/diHQzmQfh6E/0.jpg)](https://www.youtube.com/watch?v=diHQzmQfh6E)
+
 [![ATTRIBUTE ROUTING in ASP NET Core | Getting Started With ASP.NET Core Series](https://img.youtube.com/vi/a76et6ImGU8/0.jpg)](https://www.youtube.com/watch?v=a76et6ImGU8)
 
 ---
@@ -196,7 +198,16 @@ Start your application and navigate to:
 
 This should return the third weather forecast (0-indexed).
 
-## Practical Exercise: Weather Forecast Enhancements
+## Questions to Gauge Understanding
+
+- What is the primary purpose of routing in ASP.NET Core?
+- How do route templates work, and why are they useful?
+- What's the difference between convention-based and attribute routing?
+- How can you apply constraints to a route template?
+- In what scenarios might route order be significant?
+
+---
+## Homework Assignment: Weather Forecast Enhancements
 
 ### Step 1: Basic Route Parameters
 
@@ -227,18 +238,3 @@ Tip: You can use regex for date format
 Add an endpoint to simulate fetching weather data files. It should take a file path and return the name of the file.
 
 Route: `/WeatherForecast/data/{*filePath}`
-
-### Conclusion & Insights
-
-This exercise highlighted the framework's adaptability in URL structuring, demonstrating the interplay between convention-based and attribute routing, and the value of route constraints for data validation. This experience underscores the significance of clear and efficient routing designs, emphasizing the necessity for continuous refinement in software development.
-
-## Review & Questions
-Explain the understanding of Routing during code review session on your practical example.
-
-To ensure your understanding, you should be able to answer the following:
-
-- What is the primary purpose of routing in ASP.NET Core?
-- How do route templates work, and why are they useful?
-- What's the difference between convention-based and attribute routing?
-- How can you apply constraints to a route template?
-- In what scenarios might route order be significant?
