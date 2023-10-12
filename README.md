@@ -160,6 +160,15 @@ public IActionResult LatestArchives() { /*...*/ }
 If "archives/latest" is accessed, it'll match the first route because `{year}` will take "latest" as a string. To fix this, either define the specific route (`archives/latest`) before the general one or use constraints.
 
 ---
+### Text study material
+[Exploring ASP.NET Routing in .NET Core 7](https://medium.com/@codezone/exploring-asp-net-routing-in-net-core-7-d98a56f9b863)
+[Routing in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-7.0/)
+
+### Video study material
+[![Web API Routing in .NET 8 | Ep 7](https://img.youtube.com/vi/diHQzmQfh6E/0.jpg)](https://www.youtube.com/watch?v=diHQzmQfh6E)
+[![ATTRIBUTE ROUTING in ASP NET Core | Getting Started With ASP.NET Core Series](https://img.youtube.com/vi/a76et6ImGU8/0.jpg)](https://www.youtube.com/watch?v=a76et6ImGU8)
+
+---
 ### Practical Routing Example in ASP.NET Core
 
 In the standard weather forecast project, we can demonstrate routing through a simple enhancement.
@@ -195,49 +204,15 @@ Modify the GET endpoint to take a `days` parameter from the route, which specifi
 
 Route: `/WeatherForecast/{days?}`
 
-```csharp
-[HttpGet("{days:int?}")] public IEnumerable<WeatherForecast> Get(int days = 5) 
-{ 
-	// ... return forecasts for the specified number of days 
-}
-```
-
 ### Step 2: Route Constraints
 
 Add a route constraint to ensure the `days` parameter is an integer between 1 and 10.
-
-```csharp
-[HttpGet("{days:int:min(1):max(10)?}")] 
-public IEnumerable<WeatherForecast> Get(int days = 5) 
-{ 
-	// ... 
-}
-```
 
 ### Step 3: Query String Parameters
 
 Allow users to filter forecasts by temperature range using query string parameters: `minTemp` and `maxTemp`.
 
-```csharp
-public IEnumerable<WeatherForecast> Get(int days = 5, int? minTemp = null, int? maxTemp = null) 
-{ 
-	var forecasts = //... fetch or generate forecasts;  
-
-	if (minTemp.HasValue) 
-	{ 
-		forecasts = forecasts.Where(f => f.TemperatureC >= minTemp.Value); 
-	} 
-
-	if (maxTemp.HasValue) 
-	{ 
-		forecasts = forecasts.Where(f => f.TemperatureC <= maxTemp.Value); 
-	} 
-
-	return forecasts.Take(days); 
-}
-```
 Test with: `/WeatherForecast/5?minTemp=0&maxTemp=30`
-
 
 ### Step 4: Attribute Routing
 
@@ -245,30 +220,14 @@ Add a new endpoint that returns a weather summary for a specific day using attri
 
 Route: `/WeatherForecast/summary/{date}` where `date` is in the format `yyyy-MM-dd`.
 
-```csharp
-[HttpGet("summary/{date:datetime:regex(\\d{4}-\\d{2}-\\d{2})}")]
-public ActionResult<string> GetSummary(DateTime date)
-{
-    var forecast = //... find forecast for the date;
-    if (forecast == null) return NotFound();
+Tip: You can use regex for date format
 
-    return forecast.Summary;
-}
-```
 ### Step 5: Catch-all Parameter
 
 Add an endpoint to simulate fetching weather data files. It should take a file path and return the name of the file.
 
 Route: `/WeatherForecast/data/{*filePath}`
 
-```csharp
-[HttpGet("data/{*filePath}")]
-public ActionResult<string> GetDataFile(string filePath)
-{
-    // For the exercise purpose, just return the file path.
-    return $"Requested data file: {filePath}";
-}
-```
 ### Conclusion & Insights
 
 This exercise highlighted the framework's adaptability in URL structuring, demonstrating the interplay between convention-based and attribute routing, and the value of route constraints for data validation. This experience underscores the significance of clear and efficient routing designs, emphasizing the necessity for continuous refinement in software development.
@@ -283,9 +242,3 @@ To ensure your understanding, you should be able to answer the following:
 - What's the difference between convention-based and attribute routing?
 - How can you apply constraints to a route template?
 - In what scenarios might route order be significant?
-
-
-TODO:
-
-- study materials (links, videos)
-- refinement of excerise (make it as task for junior to do on his own, not just copy paste)
