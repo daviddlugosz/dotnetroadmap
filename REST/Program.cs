@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using REST.Core;
+using REST.Core.Contracts;
 using REST.Core.Repositories;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,21 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapGet("/", async (IWeatherForecastRepository repository) => await repository.GetAll());
+app.MapGet("/{id}", async (IWeatherForecastRepository repository, int id) => await repository.Get(id));
+app.MapPost("/", async (IWeatherForecastRepository repository, CreateWeatherForecastRequest request) => await repository.Create(request));
+app.MapPut("/", async (IWeatherForecastRepository repository, UpdateWeatherForecastRequest request) => await repository.Update(request));
+app.MapDelete("/", async (IWeatherForecastRepository repository, int id) => await repository.Delete(id));
+
+app.Use(async (context, next) =>
+{
+    if (context.Response.HttpContext.Response.StatusCode == (int)HttpStatusCode.OK);
+    {
+        context.Response.HttpContext.Response.StatusCode = (int)HttpStatusCode.Found;
+    }
+    await next();
+});
 
 app.Run();
 
