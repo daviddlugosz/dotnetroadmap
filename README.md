@@ -200,10 +200,12 @@ If a configuration key exists in multiple providers, the last provider wins. The
 ---
 ### Text study material
 [Configuration in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration)
+
 [Options Pattern in ASP.NET Core – Bind & Validate Configurations from appsettings.json](https://codewithmukesh.com/blog/options-pattern-in-aspnet-core/)
 
 ### Video study material
 [![Appsettings.json in .NET: How to read and get a value](https://img.youtube.com/vi/UiqTDvIFJ3g/0.jpg)](https://www.youtube.com/watch?v=UiqTDvIFJ3g)
+
 [![Manage Secrets in DotNet 6](https://img.youtube.com/vi/WgtEQCEgFVU/0.jpg)](https://www.youtube.com/watch?v=WgtEQCEgFVU)
 
 ---
@@ -281,7 +283,15 @@ Using a tool like Postman or your browser, navigate to:
 
 You should see the `ApplicationName` as `CommandLineConfigApp` (from the command-line argument), and the `Version` as `2.0.0` (from the environment variable).
 
-## Practical Exercise: Weather Forecast Enhancements
+
+## Questions to Gauge Understanding
+
+- How does ASP.NET Core decide which configuration source takes precedence when there are conflicts?
+- How would you secure sensitive configuration data, especially in a production environment?
+- What's the benefit of centralizing configurations in `appsettings.json` compared to hardcoding them?
+
+---
+## Homework Assignment: Weather Forecast Enhancements
 
 
 ### Step 1: Add Configuration to `appsettings.json`
@@ -312,16 +322,3 @@ You should see the `ApplicationName` as `CommandLineConfigApp` (from the command
 ### Step 5: Override Configuration by environment variable
 
 -   Override the `ForecastCount` using an environment variable to return 4 items
-
-### Conclusion & Insights
-
-This hands-on task highlights the importance of decoupling behavior from code, understanding configuration precedence, and the adaptability it brings to applications. This foundational knowledge is crucial for building scalable and maintainable real-world ASP.NET Core applications.
-
-## Review & Questions
-Explain the understanding of Configuration during code review session on your practical example.
-
-To ensure your understanding, you should be able to answer the following:
-
-- How does ASP.NET Core decide which configuration source takes precedence when there are conflicts?
-- How would you secure sensitive configuration data, especially in a production environment?
-- What's the benefit of centralizing configurations in `appsettings.json` compared to hardcoding them?
