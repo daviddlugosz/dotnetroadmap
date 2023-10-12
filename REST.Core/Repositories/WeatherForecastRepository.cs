@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using REST.Core.Contracts;
 
 namespace REST.Core.Repositories
@@ -6,10 +8,12 @@ namespace REST.Core.Repositories
     public class WeatherForecastRepository : IWeatherForecastRepository
     {
         private readonly ApiContext _context;
+        private readonly WeatherSettings _configuration;
 
-        public WeatherForecastRepository(ApiContext context)
+        public WeatherForecastRepository(ApiContext context, IOptions<WeatherSettings> config)
         {
             _context = context;
+            _configuration = config.Value;
         }
 
         public async Task<WeatherForecastResponse> Create(CreateWeatherForecastRequest forecast)
@@ -65,13 +69,15 @@ namespace REST.Core.Repositories
 
         public async Task<IEnumerable<WeatherForecastResponse>> GetAll()
         {
-            var items = await _context.WeatherForecasts.ToListAsync();
+            var items = await _context.WeatherForecasts
+                .Take(_configuration.ForecastCount)
+                .ToListAsync();
 
             return items.Select(x => new WeatherForecastResponse
             {
                 Id = x.Id,
                 Date = x.Date,
-                Summary = x.Summary,
+                Summary = _configuration.SummaryOverride,
                 TemperatureC = x.TemperatureC
             });
         }

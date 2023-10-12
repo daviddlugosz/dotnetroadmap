@@ -14,6 +14,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var configBuilder = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddJsonFile("appsettings.Development.json")
+    .AddEnvironmentVariables()
+    .AddUserSecrets<Program>(true);
+
+
+var config = configBuilder.Build();
+
+builder.Services.Configure<WeatherSettings>(config.GetSection("WeatherSettings"));
+
 var app = builder.Build();
 
 AddWeatherForecasts(app);
