@@ -113,7 +113,14 @@ ASP.NET Core's Minimal APIs have several built-in services you can inject withou
 ---
 
 ## Practical Exercise: Weather Forecast Minimal API
+
+#### Step 1: Create CRUD Minimal API
+
 For this practical exercise, implement Minimal API for Weather Forecast example with full CRUD functionality.
+
+#### Step 2: Add Middleware
+
+Add Middleware that if response code is 200 OK changes it to 302 Found.
 
 ### Conclusion & Insights
 
