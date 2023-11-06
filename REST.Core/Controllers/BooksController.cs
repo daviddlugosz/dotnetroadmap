@@ -50,7 +50,7 @@ namespace REST.Core.Controllers
             return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book); // 201 Created
         }
 
-        [HttpPut("{id}")]   //todo - tobe discussed - according to task description, why this should be POST when editing existing object (not creating new one)?
+        [HttpPut("{id}")]
         public ActionResult PutBook(int id, Book updatedBook)
         {
             var book = _books.FirstOrDefault(b => b.Id == id);
@@ -66,7 +66,7 @@ namespace REST.Core.Controllers
             return Ok(book); // 200 OK
         }
 
-        [HttpPut("{id}/libraryUser/{libraryUserId}")]
+        [HttpPut("{id}/libraryUser/{libraryUserId}")]   //todo - tobe discussed - according to task description, why this should be POST when editing existing object (not creating new one)?
         public ActionResult<Book> BorrowBook(int id, int libraryUserId)
         {
             var book = _books.FirstOrDefault(b => b.Id == id);
