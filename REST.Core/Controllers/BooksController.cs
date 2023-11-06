@@ -7,6 +7,7 @@ namespace REST.Core.Controllers
     [Route("[controller]")]
     public class BooksController : ControllerBase
     {
+        //static repository
         private static List<Book> _books = new List<Book>
         {
             new Book { Id = 1, Title = "Book 1", Author = "Author A", Year = 2001 },
@@ -48,6 +49,17 @@ namespace REST.Core.Controllers
 
             return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book); // 201 Created
         }
+
+        //[HttpPost]
+        //public ActionResult<Book> BorrowBook(Book book)     //TODO
+        //{
+        //    var maxId = _books.Max(b => b.Id);
+        //    book.Id = maxId + 1;
+        //    _books.Add(book);
+
+        //    return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book); // 201 Created
+        //}
+
 
         [HttpPut("{id}")]
         public ActionResult PutBook(int id, Book updatedBook)
