@@ -8,10 +8,11 @@ namespace REST.Core.Controllers
     public class LibraryUsersController : ControllerBase
     {
         //static repository
-        private static List<LibraryUser> _libraryUser = new List<LibraryUser>
+        internal static List<LibraryUser> _libraryUser = new List<LibraryUser>
         {
-            new LibraryUser { Id = 1, Name = "John Doe", Email = "xyz@seznam.cz", DateJoined = DateTime.Parse("2022-08-15T09:34:10.0000000Z"), BorrowedBooks = new List<int>()},
-            new LibraryUser { Id = 2, Name = "Jane Smith", Email = "janeSm@email.cz", DateJoined = DateTime.Parse("2023-10-23T13:28:30.0000000Z"), BorrowedBooks = new List<int>{1}}
+            new LibraryUser { Id = 1, Name = "John Doe", Email = "xyz@seznam.cz", DateJoined = DateTime.Parse("2022-08-15T09:34:10.0000000Z"), BorrowedBooks = new List<int>() },
+            new LibraryUser { Id = 2, Name = "Jane Smith", Email = "janeSm@email.cz", DateJoined = DateTime.Parse("2023-10-23T13:28:30.0000000Z"),
+                BorrowedBooks = new List<int>{ BooksController._books.First(x => x.ISBN == "191-1-52-359781-3").Id } }
         };
 
         private readonly ILogger<LibraryUsersController> _logger;
@@ -38,6 +39,26 @@ namespace REST.Core.Controllers
             }
 
             return Ok(libraryUser); // 200 OK
+        }
+
+        [HttpGet("BorrowedBooks/{id}")]
+        public ActionResult<LibraryUser> GetLibraryUserBorrowedBooks(int id)
+        {
+            var libraryUser = _libraryUser.FirstOrDefault(b => b.Id == id);
+
+            if (libraryUser == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+
+            var books = BooksController._books.Where(x => x.BorrowedByUserId.Equals(libraryUser.Id));
+
+            if (books != null && books.Any())
+            {
+                return Ok(books); // 200 OK
+            }
+
+            return NotFound(); // 404 Not Found
         }
 
         [HttpPost]

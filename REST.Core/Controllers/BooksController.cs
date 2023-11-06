@@ -8,10 +8,10 @@ namespace REST.Core.Controllers
     public class BooksController : ControllerBase
     {
         //static repository
-        private static List<Book> _books = new List<Book>
+        internal static List<Book> _books = new List<Book>
         {
-            new Book { Id = 1, Title = "Book 1", Author = "Author A", Year = 2001 },
-            new Book { Id = 2, Title = "Book 2", Author = "Author B", Year = 2002 }
+            new Book { Id = 1, Title = "The Bells", Author = "E. A. Poe", Year = 2001, ISBN = "978-3-16-148410-0", BorrowedByUserId = null},
+            new Book { Id = 2, Title = "Fairy Tale", Author = "Stephen King", Year = 2002, ISBN = "191-1-52-359781-3", BorrowedByUserId = 2}
         };
 
         private readonly ILogger<BooksController> _logger;
@@ -50,18 +50,7 @@ namespace REST.Core.Controllers
             return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book); // 201 Created
         }
 
-        //[HttpPost]
-        //public ActionResult<Book> BorrowBook(Book book)     //TODO
-        //{
-        //    var maxId = _books.Max(b => b.Id);
-        //    book.Id = maxId + 1;
-        //    _books.Add(book);
-
-        //    return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book); // 201 Created
-        //}
-
-
-        [HttpPut("{id}")]
+        [HttpPut("{id}")]   //todo - tobe discussed - according to task description, why this should be POST when editing existing object (not creating new one)?
         public ActionResult PutBook(int id, Book updatedBook)
         {
             var book = _books.FirstOrDefault(b => b.Id == id);
@@ -73,6 +62,29 @@ namespace REST.Core.Controllers
             book.Title = updatedBook.Title;
             book.Author = updatedBook.Author;
             book.Year = updatedBook.Year;
+
+            return Ok(book); // 200 OK
+        }
+
+        [HttpPut("{id}/libraryUser/{libraryUserId}")]
+        public ActionResult<Book> BorrowBook(int id, int libraryUserId)
+        {
+            var book = _books.FirstOrDefault(b => b.Id == id);
+
+            if (book == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+
+            var libraryUser = LibraryUsersController._libraryUser.FirstOrDefault(b => b.Id == libraryUserId);
+
+            if (libraryUser == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+
+            book.BorrowedByUserId = libraryUser.Id;
+
 
             return Ok(book); // 200 OK
         }
