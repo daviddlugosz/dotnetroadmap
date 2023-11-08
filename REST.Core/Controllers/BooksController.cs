@@ -89,6 +89,34 @@ namespace REST.Core.Controllers
             return Ok(book); // 200 OK
         }
 
+        [HttpPatch("libraryUser/{libraryUserId}")] //todo - to be discussed - why not to use PATCH instead of PUT/POST?
+        public ActionResult<Book> BorrowBook(int libraryUserId, Book bookForUpdate)
+        {
+            if (bookForUpdate.Id == 0)
+            {
+                return BadRequest(); // 400 Bad Request
+            }
+            
+            var book = _books.FirstOrDefault(b => b.Id == bookForUpdate.Id);
+
+            if (book == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+
+            var libraryUser = LibraryUsersController._libraryUser.FirstOrDefault(b => b.Id == libraryUserId);
+
+            if (libraryUser == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+
+            book.BorrowedByUserId = libraryUser.Id;
+
+
+            return Ok(book); // 200 OK
+        }
+
         [HttpDelete("{id}")]
         public ActionResult DeleteBook(int id)
         {
