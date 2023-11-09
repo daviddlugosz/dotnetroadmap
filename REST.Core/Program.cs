@@ -1,3 +1,5 @@
+using REST.Core.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,5 +23,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Register middleware (will be executed with each HTTP request)
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.Run();
