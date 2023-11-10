@@ -17,8 +17,10 @@
                 // authorized, continue processing -> Call the next middleware in the pipeline
                 await _next(context);
             }
-
-            context.Response.StatusCode = 401; // 401 Unauthorized
+            else
+            {
+                context.Response.StatusCode = 401; // 401 Unauthorized
+            }
         }
     }
 }
