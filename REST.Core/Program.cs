@@ -44,5 +44,6 @@ app.MapControllers();
 // Register middleware (will be executed with each HTTP request)
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseRateLimiter();
+app.UseMiddleware<AuthenticationMiddleware>();
 
 app.Run();
