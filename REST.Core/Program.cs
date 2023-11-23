@@ -1,4 +1,4 @@
-using SimpleStoreDI.Services;
+using REST.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

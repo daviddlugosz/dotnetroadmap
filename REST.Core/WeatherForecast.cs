@@ -1,4 +1,4 @@
-namespace SimpleStoreDI
+namespace REST.Core
 {
     public class WeatherForecast
     {

@@ -1,6 +1,6 @@
-﻿using SimpleStoreDI.Models;
+﻿using REST.Core.Models;
 
-namespace SimpleStoreDI.Services
+namespace REST.Core.Services
 {
     public class InMemoryDataService
     {

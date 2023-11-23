@@ -1,4 +1,4 @@
-﻿namespace SimpleStoreDI.Models
+﻿namespace REST.Core.Models
 {
     public class Product
     {

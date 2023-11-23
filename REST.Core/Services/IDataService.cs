@@ -1,4 +1,4 @@
-﻿namespace SimpleStoreDI.Services
+﻿namespace REST.Core.Services
 {
     public interface IDataService<T> where T : class
     {

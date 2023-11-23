@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SimpleStoreDI.Models;
-using SimpleStoreDI.Services;
+using REST.Core.Models;
+using REST.Core.Services;
 
-namespace SimpleStoreDI.Controllers
+namespace REST.Core.Controllers
 {
     [ApiController]
     [Route("[controller]")]

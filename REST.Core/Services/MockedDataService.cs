@@ -1,7 +1,7 @@
-﻿using SimpleStoreDI.Models;
-using System.Reflection;
+﻿using System.Reflection;
+using REST.Core.Models;
 
-namespace SimpleStoreDI.Services
+namespace REST.Core.Services
 {
     public class MockedDataService<T> : IDataService<T> where T : class
     {
