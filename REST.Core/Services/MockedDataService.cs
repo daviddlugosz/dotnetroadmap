@@ -5,7 +5,7 @@ namespace REST.Core.Services
 {
     public class MockedDataService<T> : IDataService<T> where T : class
     {
-        private List<object> _mockedObjects = new List<object>  //todo - this repo is being overwritten with each endpoint call. Not possible to store new data here!
+        private List<object> _mockedObjects = new List<object>
         {
             new Customer
             {
