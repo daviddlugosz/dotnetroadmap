@@ -1,129 +1,154 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using REST.Core.Models;
+using REST.Core.Utils;
 
 namespace REST.Core.Services
 {
     public class MockedDataService<T> : IDataService<T> where T : class
     {
-        private List<object> _mockedObjects = new List<object>
+        private static readonly string[] CustomerFirstNames = new[]
         {
-            new Customer
-            {
-                Id = 1,
-                Name = "John Doe",
-                Email = "jdoe@seznam.cz"
-            },
-            new Customer
-            {
-                Id = 2,
-                Name = "Austin Powers",
-                Email = "ap007@email.cz"
-            },
-            new Product
-            {
-                Id = 1,
-                Name = "T-Shirt",
-                Description = "Red t-shirt size XXL",
-                Price = 1.25F
-            },
-            new Product
-            {
-                Id = 2,
-                Name = "Jacket",
-                Description = "Brown insulated ski jacket",
-                Price = 2.50F
-            },
-            new Product
-            {
-                Id = 3,
-                Name = "Cap",
-                Description = "Baseball cap with peak",
-                Price = 1.00F
-            }
+            "John", "Joe", "Bill", "Kevin", "George", "Patrick", "Ellen", "Jane", "Nikki", "Sandra", "Kate", "Gwenn"
         };
+
+        private static readonly string[] CustomerLastNames = new[]
+        {
+            "Doe", "Black", "Murray", "Spacey", "Lucas", "Stewart", "Paige", "Brown", "Carson", "Bullock", "Moss", "Stefani"
+        };
+
+        private static readonly string[] CustomerEmailNameSeparators = new[]
+        {
+            "", "-", "_", "."
+        };
+
+        private static readonly string[] CustomerEmailSuffixs = new[]
+        {
+            "@seznam.cz", "@email.cz","@gmail.com","@yahoo.com","@centrum.cz", "@hotmail.com", "@outlook.com"
+        };
+
+        private static readonly string[] ProductNames = new[]
+        {
+            "Driller", "Car", "Toilet", "Gun", "Baseball cap", "Shoes",
+        };
+
+        private static readonly string[] ProductAdjectives = new[]
+        {
+            "Awesome", "Useful", "Great", "Amazing", "Cheap", "Handy", "Comfortable","Easy-to-use","Efficient","Trendy", "Cool", "Powerful"
+        };
+
+        private readonly Random _rng = new Random();
+
+        private List<object> _data = new List<object>();
+
+        public MockedDataService()
+        {
+            AddCustomers(3);
+            AddProducts(4);
+        }
+
+        private void AddCustomers(int numberOfCustomers)
+        {
+            var id = GenericCollectionOperations<T>.GetMaxId(_data);
+
+            for (var i = 0; i < numberOfCustomers; i++)
+            {
+                id++;
+                var name = GetName();
+
+                var customer = new Customer
+                {
+                    Id = id,
+                    Name = name,
+                    Email = GetEmail(name)
+                };
+
+                _data.Add(customer);
+            }
+        }
+        
+        private string GetName()
+        {
+            return $"{CustomerFirstNames[_rng.Next(CustomerFirstNames.Length)]} {CustomerLastNames[_rng.Next(CustomerLastNames.Length)]}";
+        }
+
+        private string GetEmail(string fullName)
+        {
+            var names = fullName.Split(" ");
+            string email = $"{names[0].ToLower().Substring(0,_rng.Next(1,names[0].Length))}" +
+                           $"{CustomerEmailNameSeparators[_rng.Next(CustomerEmailNameSeparators.Length)]}" +
+                           $"{names[1].ToLower().Substring(0, _rng.Next(1,names[1].Length))}" +
+                           $"{CustomerEmailSuffixs[_rng.Next(CustomerEmailSuffixs.Length)]}";
+
+            return email;
+        }
+
+        private void AddProducts(int numberOfProducts)
+        {
+            var id = GenericCollectionOperations<T>.GetMaxId(_data);
+            var notYetUsedProducts = ProductNames.ToList();
+
+            for (var i = numberOfProducts - 1; i >= 0; i--)
+            {
+                id++;
+                var productName = GetProductName(notYetUsedProducts);
+
+                var product = new Product
+                {
+                    Id = id,
+                    Name = productName,
+                    Description = GetProductDescription(productName),
+                    Price = GetPrice(2, 150)
+                };
+
+                _data.Add(product);
+                notYetUsedProducts.RemoveAt(notYetUsedProducts.IndexOf(productName));
+            }
+        }
+
+        private string GetProductName(List<string> productNames)
+        {
+            return $"{productNames[_rng.Next(productNames.Count)]}";
+        }
+
+        private string GetProductDescription(string productName)
+        {
+            string description = $"{ProductAdjectives[_rng.Next(ProductNames.Length)]}";
+            var notYetUsedAdjectives = ProductAdjectives.Where(x=> x != description).ToList();
+            var numberOfExtraAdjectives = _rng.Next(5);
+
+            for (int i = numberOfExtraAdjectives - 1; i >= 0; i--)
+            {
+                description += $" {notYetUsedAdjectives[i]}".ToLower();
+                notYetUsedAdjectives.RemoveAt(i);
+            }
+
+            return $"{description} {productName.ToLower()}";
+        }
+
+        private float GetPrice(float min, float max)
+        {
+            var price = (_rng.NextDouble() * (max - min) + min);
+            price = Math.Round(price, 2);
+
+            return (float)price;
+        }
+
+
 
         public void Add(T t)
         {
-            var sameTypeObjects = _mockedObjects.OfType<T>().ToList();
-            var maxId = GetMaxId(sameTypeObjects);
-            UpdateObjectId(t, maxId + 1);
-            _mockedObjects.Add(t);
-        }
-
-        private int GetMaxId(List<T> sameTypeObjects)
-        {
-            List<int> existingIds = new List<int>();
-
-            foreach (var obj in sameTypeObjects)
-            {
-                Type type = obj.GetType();
-                PropertyInfo[] props = type.GetProperties();
-
-                foreach (var prop in props)
-                {
-                    if (prop.GetIndexParameters().Length == 0)
-                    {
-                        if (prop.Name.Equals("Id"))
-                        {
-                            existingIds.Add((int)(prop.GetValue(obj) ?? 0));
-                        }
-                    }
-                }
-            }
-
-            return existingIds.Any() ? existingIds.Max() : 0;
-        }
-
-        private void UpdateObjectId(T t, int newId)
-        {
-            Type type = t.GetType();
-            PropertyInfo[] props = type.GetProperties();
-
-            foreach (var prop in props)
-            {
-                if (prop.GetIndexParameters().Length == 0)
-                {
-                    if (prop.Name.ToLower().Equals("id"))
-                    {
-                        prop.SetValue(t, newId);
-                        break;
-                    }
-                }
-            }
+            throw new NotImplementedException();
         }
 
         public ICollection<T> GetAll()
         {
-            var sameTypeObjects = _mockedObjects.OfType<T>().ToList();
-
-            return sameTypeObjects;
+            throw new NotImplementedException();
         }
 
         public T GetById(int id)
         {
-            List<T> sameTypeObjects = _mockedObjects.OfType<T>().ToList();
-
-            foreach (var obj in sameTypeObjects)
-            {
-                Type type = obj.GetType();
-                PropertyInfo[] props = type.GetProperties();
-
-                foreach (var prop in props)
-                {
-                    if (prop.GetIndexParameters().Length == 0)
-                    {
-                        if (prop.Name.ToLower().Equals("id"))
-                        {
-                            if (prop.GetValue(obj).Equals(id))
-                            {
-                                return obj;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return null;
+            throw new NotImplementedException();
         }
     }
 }
