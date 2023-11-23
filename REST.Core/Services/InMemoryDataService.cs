@@ -5,6 +5,7 @@ namespace REST.Core.Services
 {
     public class InMemoryDataService<T> : IDataService<T> where T : class
     {
+        private int _requestCounter;
         private List<object> _data = new List<object>
         {
             new Customer
@@ -42,8 +43,14 @@ namespace REST.Core.Services
             }
         };
 
+        public InMemoryDataService()
+        {
+            _requestCounter = 0;
+        }
+
         public void Add(T t)
         {
+            _requestCounter++;
             var maxId = GenericCollectionOperations<T>.GetMaxId(_data);
             GenericCollectionOperations<T>.UpdateObjectId(t, maxId + 1);
             _data.Add(t);
@@ -51,11 +58,13 @@ namespace REST.Core.Services
 
         public ICollection<T> GetAll()
         {
+            _requestCounter++;
             return _data.OfType<T>().ToList();
         }
 
         public T? GetById(int id)
         {
+            _requestCounter++;
             var item = GenericCollectionOperations<T?>.GetById(_data, id);
 
             return item == default(T) ? null : item;
