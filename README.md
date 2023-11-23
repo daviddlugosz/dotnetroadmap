@@ -1,3 +1,0 @@
-# dotnetroadmap
-
-see feature branches

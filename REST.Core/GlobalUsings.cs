@@ -1,1 +1,0 @@
-﻿global using Console = System.Diagnostics.Debug;   //to see messages in Immediate Window (Tools - Options - Debug - General: "Redirect all Output Window text to the Immediate Window" must be enabled)
