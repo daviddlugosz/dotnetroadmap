@@ -1,6 +1,5 @@
 ﻿using REST.Core.Models;
 using REST.Core.Utils;
-using System.Reflection;
 
 namespace REST.Core.Services
 {
@@ -46,60 +45,20 @@ namespace REST.Core.Services
         public void Add(T t)
         {
             var maxId = GenericCollectionOperations<T>.GetMaxId(_data);
-            UpdateObjectId(t, maxId + 1);
+            GenericCollectionOperations<T>.UpdateObjectId(t, maxId + 1);
             _data.Add(t);
-        }
-
-        private void UpdateObjectId(T t, int newId)
-        {
-            Type type = t.GetType();
-            PropertyInfo[] props = type.GetProperties();
-
-            foreach (var prop in props)
-            {
-                if (prop.GetIndexParameters().Length == 0)
-                {
-                    if (prop.Name.ToLower().Equals("id"))
-                    {
-                        prop.SetValue(t, newId);
-                        break;
-                    }
-                }
-            }
         }
 
         public ICollection<T> GetAll()
         {
-            var sameTypeObjects = _data.OfType<T>().ToList();
-
-            return sameTypeObjects;
+            return _data.OfType<T>().ToList();
         }
 
-        public T GetById(int id)
+        public T? GetById(int id)
         {
-            List<T> sameTypeObjects = _data.OfType<T>().ToList();
+            var item = GenericCollectionOperations<T?>.GetById(_data, id);
 
-            foreach (var obj in sameTypeObjects)
-            {
-                Type type = obj.GetType();
-                PropertyInfo[] props = type.GetProperties();
-
-                foreach (var prop in props)
-                {
-                    if (prop.GetIndexParameters().Length == 0)
-                    {
-                        if (prop.Name.ToLower().Equals("id"))
-                        {
-                            if (prop.GetValue(obj).Equals(id))
-                            {
-                                return obj;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return null;
+            return item == default(T) ? null : item;
         }
     }
 }

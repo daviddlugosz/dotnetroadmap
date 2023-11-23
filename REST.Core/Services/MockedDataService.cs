@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using REST.Core.Models;
+﻿using REST.Core.Models;
 using REST.Core.Utils;
 
 namespace REST.Core.Services
@@ -43,6 +41,7 @@ namespace REST.Core.Services
 
         public MockedDataService()
         {
+            //generate some initial data
             AddCustomers(3);
             AddProducts(4);
         }
@@ -134,21 +133,23 @@ namespace REST.Core.Services
             return (float)price;
         }
 
-
-
         public void Add(T t)
         {
-            throw new NotImplementedException();
+            var maxId = GenericCollectionOperations<T>.GetMaxId(_data);
+            GenericCollectionOperations<T>.UpdateObjectId(t, maxId + 1);
+            _data.Add(t);
         }
 
         public ICollection<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _data.OfType<T>().ToList();
         }
 
-        public T GetById(int id)
+        public T? GetById(int id)
         {
-            throw new NotImplementedException();
+            var item = GenericCollectionOperations<T?>.GetById(_data, id);
+
+            return item == default(T) ? null : item;
         }
     }
 }

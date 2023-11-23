@@ -4,6 +4,6 @@
     {
         void Add(T t);
         ICollection<T> GetAll();
-        T GetById(int id);
+        T? GetById(int id);
     }
 }
