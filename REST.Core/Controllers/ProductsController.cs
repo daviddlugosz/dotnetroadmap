@@ -35,11 +35,43 @@ namespace REST.Core.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Product> PostProduct(Product item)
+        public ActionResult<Product> Create(Product item)
         {
             _dataService.Add(item);
 
             return CreatedAtAction(nameof(GetById), new { id = item.Id }, item); // 201 Created
+        }
+
+        [HttpPut]
+        public ActionResult<Product> Update(Product item)
+        {
+            if (item.Id == 0)
+            {
+                return BadRequest(); // 400 Bad Request
+            }
+
+            var updatedItem = _dataService.Update(item);
+
+            if (updatedItem == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+
+            return Ok(updatedItem); // 200 OK
+        }
+
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            var item = _dataService.Delete(id);
+            
+            if (item == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+
+            return NoContent(); // 204 No Content
         }
     }
 }

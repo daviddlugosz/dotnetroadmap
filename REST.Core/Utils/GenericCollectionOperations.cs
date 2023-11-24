@@ -57,6 +57,25 @@ namespace REST.Core.Utils
             return default(T);
         }
 
+        public static int? GetObjectId(object obj)
+        {
+            Type type = obj.GetType();
+            PropertyInfo[] props = type.GetProperties();
+
+            foreach (var prop in props)
+            {
+                if (prop.GetIndexParameters().Length == 0)
+                {
+                    if (prop.Name.ToLower().Equals("id"))
+                    {
+                        return (int?)prop.GetValue(obj);
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public static void UpdateObjectId(T t, int newId)
         {
             Type type = t.GetType();

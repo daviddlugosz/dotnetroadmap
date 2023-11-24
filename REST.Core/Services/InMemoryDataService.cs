@@ -69,5 +69,39 @@ namespace REST.Core.Services
 
             return item == default(T) ? null : item;
         }
+
+        public T? Update(T t)
+        {
+            _requestCounter++;
+            var id = GenericCollectionOperations<T?>.GetObjectId(t);
+
+            if (id != null)
+            {
+                var item = GenericCollectionOperations<T?>.GetById(_data, (int)id);
+
+                if (item != null)
+                {
+                    _data.Remove(item); //delete existing
+                    _data.Add(t);   //add new(updated) with same id
+
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+        public T? Delete(int id)
+        {
+            _requestCounter++;
+            var item = GenericCollectionOperations<T?>.GetById(_data, id);
+            
+            if (item != null)
+            {
+                _data.Remove(item);
+            }
+
+            return item;
+        }
     }
 }
