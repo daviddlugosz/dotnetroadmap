@@ -16,10 +16,14 @@ ASP.NET Core provides a rich configuration system. Applications can pull configu
 ## Study materials
 ### Text study material
 [Configuration in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration)
+
 [Options Pattern in ASP.NET Core – Bind & Validate Configurations from appsettings.json](https://codewithmukesh.com/blog/options-pattern-in-aspnet-core/)
+
 ### Video study material
 [![Appsettings.json in .NET: How to read and get a value](https://img.youtube.com/vi/UiqTDvIFJ3g/0.jpg)](https://www.youtube.com/watch?v=UiqTDvIFJ3g)
+
 [![Manage Secrets in DotNet 6](https://img.youtube.com/vi/WgtEQCEgFVU/0.jpg)](https://www.youtube.com/watch?v=WgtEQCEgFVU)
+
 ## Homework: Weather Forecast Enhancements
 ### Step 1: Add Configuration to `appsettings.json`
 -   Add a section called `WeatherSettings` to your `appsettings.json`.
