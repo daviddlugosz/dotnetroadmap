@@ -13,10 +13,14 @@ In ASP.NET Core, routing serves as a mechanism to map incoming HTTP requests to 
 ## Study materials
 ### Text study material
 [Exploring ASP.NET Routing in .NET Core 7](https://medium.com/@codezone/exploring-asp-net-routing-in-net-core-7-d98a56f9b863)
+
 [Routing in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-7.0/)
+
 ### Video study material
 [![Web API Routing in .NET 8 | Ep 7](https://camo.githubusercontent.com/da02489b044e4949c0c06fc6d364f4e3826bbb23ff8aa456bc66ac228267a601/68747470733a2f2f696d672e796f75747562652e636f6d2f76692f646948517a6d51666836452f302e6a7067)](https://www.youtube.com/watch?v=diHQzmQfh6E)
+
 [![ATTRIBUTE ROUTING in ASP NET Core | Getting Started With ASP.NET Core Series](https://camo.githubusercontent.com/587d38ea136f4db32730440b37fa01178b5c3509690b0fd149f58cdc10c2a071/68747470733a2f2f696d672e796f75747562652e636f6d2f76692f613736657436496d4755382f302e6a7067)](https://www.youtube.com/watch?v=a76et6ImGU8)
+
 ## Homework: Weather Forecast Enhancements
 
 ### Step 1: Basic Route Parameters
