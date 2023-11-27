@@ -14,10 +14,14 @@ Middleware in ASP.NET Core forms the backbone of the request-response pipeline, 
 ## Study material
 ### Text study material:
 [ASP.NET Core Request Processing Pipeline](https://dotnettutorials.net/lesson/asp-net-core-request-processing-pipeline/)
+
 [Write custom ASP.NET Core middleware](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write?view=aspnetcore-7.0)
+
 ### Video study material:
 [![ASP.NET Core Understanding the middleware pipeline, Startup configuration - Application Life Cycle](https://img.youtube.com/vi/2SRUc7zZiyw/0.jpg)](https://www.youtube.com/watch?v=2SRUc7zZiyw)
+
 [![MIDDLEWARE in ASP.NET Core | Getting Started With ASP.NET Core Series](https://img.youtube.com/vi/5eifH7LEnGo/0.jpg)](https://www.youtube.com/watch?v=5eifH7LEnGo)
+
 ## Homework: Middleware Mastery
 **Objective:** Demonstrate a clear understanding of middleware in ASP.NET Core by designing and implementing a series of custom middleware components.
 ### Tasks:
