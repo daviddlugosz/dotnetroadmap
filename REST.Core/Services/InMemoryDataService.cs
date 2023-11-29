@@ -1,5 +1,4 @@
 ﻿using REST.Core.Models;
-using REST.Core.Utils;
 
 namespace REST.Core.Services
 {
@@ -70,27 +69,21 @@ namespace REST.Core.Services
         public T? GetById(int id)
         {
             _requestCounter++;
-            var item = GenericCollectionOperations<T?>.GetById(_data, id);
 
-            return item;
+            return (T?)_data.FirstOrDefault(x => x.Id == id);
         }
 
         public T? Update(T updatedItem)
         {
             _requestCounter++;
-            var id = GenericCollectionOperations<T?>.GetObjectId(updatedItem);
+            var existingItem = GetById(updatedItem.Id);
 
-            if (id != null)
+            if (existingItem != null)
             {
-                var existingItem = GenericCollectionOperations<T?>.GetById(_data, (int)id);
+                _data.Remove(existingItem); //delete existing
+                _data.Add(updatedItem);   //add new(updated) with same id
 
-                if (existingItem != null)
-                {
-                    _data.Remove(existingItem); //delete existing
-                    _data.Add(updatedItem);   //add new(updated) with same id
-
-                    return updatedItem;
-                }
+                return updatedItem;
             }
 
             return default(T);
@@ -99,14 +92,14 @@ namespace REST.Core.Services
         public T? Delete(int id)
         {
             _requestCounter++;
-            var item = GenericCollectionOperations<T?>.GetById(_data, id);
-            
-            if (item != null)
+            var existingItem = _data.FirstOrDefault(x => x.Id == id);
+
+            if (existingItem != null)
             {
-                _data.Remove(item);
+                _data.Remove(existingItem);
             }
 
-            return item;
+            return (T?)existingItem;
         }
     }
 }

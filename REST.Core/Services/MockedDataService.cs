@@ -1,5 +1,4 @@
 ﻿using REST.Core.Models;
-using REST.Core.Utils;
 
 namespace REST.Core.Services
 {
@@ -42,13 +41,28 @@ namespace REST.Core.Services
         public MockedDataService()
         {
             //generate some initial data
-            AddCustomers(3);
-            AddProducts(4);
+            var type = typeof(T);
+
+            if (type == typeof(Customer))
+            {
+                AddCustomers(3);
+            }
+
+            if (type == typeof(Product))
+            {
+                AddProducts(4);
+            }
         }
 
         private void AddCustomers(int numberOfCustomers)
         {
-            var id = GenericCollectionOperations<T>.GetMaxId(_data);
+            var id = 0;
+            var existingCustomers = _data.OfType<Customer>().ToList();
+
+            if (existingCustomers.Any())
+            {
+                id = existingCustomers.Max(x => x.Id);
+            }
 
             for (var i = 0; i < numberOfCustomers; i++)
             {
@@ -84,7 +98,14 @@ namespace REST.Core.Services
 
         private void AddProducts(int numberOfProducts)
         {
-            var id = GenericCollectionOperations<T>.GetMaxId(_data);
+            var id = 0;
+            var existingProducts = _data.OfType<Product>().ToList();
+
+            if (existingProducts.Any())
+            {
+                id = existingProducts.Max(x => x.Id);
+            }
+
             var notYetUsedProducts = ProductNames.ToList();
 
             for (var i = numberOfProducts - 1; i >= 0; i--)
@@ -135,8 +156,11 @@ namespace REST.Core.Services
 
         public void Add(T item)
         {
-            var maxId = GenericCollectionOperations<T>.GetMaxId(_data);
-            GenericCollectionOperations<T>.UpdateObjectId(item, maxId + 1);
+            if (_data.Any(x => x.Id == item.Id))
+            {
+                return;
+            }
+
             _data.Add(item);
         }
 
@@ -147,26 +171,19 @@ namespace REST.Core.Services
 
         public T? GetById(int id)
         {
-            var item = GenericCollectionOperations<T?>.GetById(_data, id);
-
-            return item;
+            return (T?)_data.FirstOrDefault(x => x.Id == id);
         }
 
         public T? Update(T updatedItem)
         {
-            var id = GenericCollectionOperations<T?>.GetObjectId(updatedItem);
+            var existingItem = GetById(updatedItem.Id);
 
-            if (id != null)
+            if (existingItem != null)
             {
-                var item = GenericCollectionOperations<T?>.GetById(_data, (int)id);
+                _data.Remove(existingItem); //delete existing
+                _data.Add(updatedItem);   //add new(updated) with same id
 
-                if (item != null)
-                {
-                    _data.Remove(item); //delete existing
-                    _data.Add(updatedItem);   //add new(updated) with same id
-
-                    return updatedItem;
-                }
+                return updatedItem;
             }
 
             return default(T);
@@ -174,14 +191,14 @@ namespace REST.Core.Services
 
         public T? Delete(int id)
         {
-            var item = GenericCollectionOperations<T?>.GetById(_data, id);
+            var existingItem = _data.FirstOrDefault(x => x.Id == id);
 
-            if (item != null)
+            if (existingItem != null)
             {
-                _data.Remove(item);
+                _data.Remove(existingItem);
             }
 
-            return item;
+            return (T?)existingItem;
         }
     }
 }
