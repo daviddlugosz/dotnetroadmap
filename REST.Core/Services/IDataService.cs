@@ -1,11 +1,13 @@
-﻿namespace REST.Core.Services
+﻿using REST.Core.Models;
+
+namespace REST.Core.Services
 {
-    public interface IDataService<T> where T : class
+    public interface IDataService<T> where T : IId
     {
-        void Add(T t);
+        void Add(T item);
         ICollection<T> GetAll();
         T? GetById(int id);
-        T? Update(T t);
+        T? Update(T updatedItem);
         T? Delete(int id);
     }
 }

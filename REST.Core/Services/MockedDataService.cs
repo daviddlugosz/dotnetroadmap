@@ -3,7 +3,7 @@ using REST.Core.Utils;
 
 namespace REST.Core.Services
 {
-    public class MockedDataService<T> : IDataService<T> where T : class
+    public class MockedDataService<T> : IDataService<T> where T : IId
     {
         private static readonly string[] CustomerFirstNames = new[]
         {
@@ -37,7 +37,7 @@ namespace REST.Core.Services
 
         private readonly Random _rng = new Random();
 
-        private List<object> _data = new List<object>();
+        private List<IId> _data = new List<IId>();
 
         public MockedDataService()
         {
@@ -133,11 +133,11 @@ namespace REST.Core.Services
             return (float)price;
         }
 
-        public void Add(T t)
+        public void Add(T item)
         {
             var maxId = GenericCollectionOperations<T>.GetMaxId(_data);
-            GenericCollectionOperations<T>.UpdateObjectId(t, maxId + 1);
-            _data.Add(t);
+            GenericCollectionOperations<T>.UpdateObjectId(item, maxId + 1);
+            _data.Add(item);
         }
 
         public ICollection<T> GetAll()
@@ -149,12 +149,12 @@ namespace REST.Core.Services
         {
             var item = GenericCollectionOperations<T?>.GetById(_data, id);
 
-            return item == default(T) ? null : item;
+            return item;
         }
 
-        public T? Update(T t)
+        public T? Update(T updatedItem)
         {
-            var id = GenericCollectionOperations<T?>.GetObjectId(t);
+            var id = GenericCollectionOperations<T?>.GetObjectId(updatedItem);
 
             if (id != null)
             {
@@ -163,13 +163,13 @@ namespace REST.Core.Services
                 if (item != null)
                 {
                     _data.Remove(item); //delete existing
-                    _data.Add(t);   //add new(updated) with same id
+                    _data.Add(updatedItem);   //add new(updated) with same id
 
-                    return t;
+                    return updatedItem;
                 }
             }
 
-            return null;
+            return default(T);
         }
 
         public T? Delete(int id)

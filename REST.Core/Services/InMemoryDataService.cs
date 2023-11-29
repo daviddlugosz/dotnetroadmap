@@ -3,10 +3,10 @@ using REST.Core.Utils;
 
 namespace REST.Core.Services
 {
-    public class InMemoryDataService<T> : IDataService<T> where T : class
+    public class InMemoryDataService<T> : IDataService<T> where T : IId
     {
         private int _requestCounter;
-        private List<object> _data = new List<object>
+        private List<IId> _data = new List<IId>
         {
             new Customer
             {
@@ -24,7 +24,7 @@ namespace REST.Core.Services
             {
                 Id = 1,
                 Name = "T-Shirt",
-                Description = "Red t-shirt size XXL",
+                Description = "Red item-shirt size XXL",
                 Price = 1.25F
             },
             new Product
@@ -48,12 +48,17 @@ namespace REST.Core.Services
             _requestCounter = 0;
         }
 
-        public void Add(T t)
+        public void Add(T item)
         {
             _requestCounter++;
-            var maxId = GenericCollectionOperations<T>.GetMaxId(_data);
-            GenericCollectionOperations<T>.UpdateObjectId(t, maxId + 1);
-            _data.Add(t);
+
+
+            if (_data.Any(x => x.Id == item.Id))
+            {
+                return;
+            }
+
+            _data.Add(item);
         }
 
         public ICollection<T> GetAll()
@@ -67,28 +72,28 @@ namespace REST.Core.Services
             _requestCounter++;
             var item = GenericCollectionOperations<T?>.GetById(_data, id);
 
-            return item == default(T) ? null : item;
+            return item;
         }
 
-        public T? Update(T t)
+        public T? Update(T updatedItem)
         {
             _requestCounter++;
-            var id = GenericCollectionOperations<T?>.GetObjectId(t);
+            var id = GenericCollectionOperations<T?>.GetObjectId(updatedItem);
 
             if (id != null)
             {
-                var item = GenericCollectionOperations<T?>.GetById(_data, (int)id);
+                var existingItem = GenericCollectionOperations<T?>.GetById(_data, (int)id);
 
-                if (item != null)
+                if (existingItem != null)
                 {
-                    _data.Remove(item); //delete existing
-                    _data.Add(t);   //add new(updated) with same id
+                    _data.Remove(existingItem); //delete existing
+                    _data.Add(updatedItem);   //add new(updated) with same id
 
-                    return t;
+                    return updatedItem;
                 }
             }
 
-            return null;
+            return default(T);
         }
 
         public T? Delete(int id)

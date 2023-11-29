@@ -1,9 +1,9 @@
 ﻿namespace REST.Core.Models
 {
-    public class Customer
+    public class Customer : IId
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
+        public required string Name { get; set; }
+        public required string Email { get; set; }
     }
 }

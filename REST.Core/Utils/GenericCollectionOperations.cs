@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
+using REST.Core.Models;
 
 namespace REST.Core.Utils
 {
     public class GenericCollectionOperations<T>
     {
-        public static int GetMaxId(List<object> objects)
+        public static int GetMaxId(List<IId> objects)
         {
             var sameTypeObjects = objects.OfType<T>().ToList();
 
@@ -13,6 +14,7 @@ namespace REST.Core.Utils
             foreach (var obj in sameTypeObjects)
             {
                 Type type = obj.GetType();
+
                 PropertyInfo[] props = type.GetProperties();
 
                 foreach (var prop in props)
@@ -30,7 +32,7 @@ namespace REST.Core.Utils
             return existingIds.Any() ? existingIds.Max() : 0;
         }
 
-        public static T? GetById(List<object> objects, int id)
+        public static T? GetById(List<IId> objects, int id)
         {
             List<T> sameTypeObjects = objects.OfType<T>().ToList();
 
