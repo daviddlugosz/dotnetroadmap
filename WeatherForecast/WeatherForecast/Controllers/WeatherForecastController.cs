@@ -18,10 +18,13 @@ namespace WeatherForecast.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet]
+        [Route("{days?}")]
+        public IEnumerable<WeatherForecast> Get(int? days = 0)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var numberOfDays = (days == null || days == 0) ? 5 : days;
+
+            return Enumerable.Range(1, (int)numberOfDays).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
                 TemperatureC = Random.Shared.Next(-20, 55),
