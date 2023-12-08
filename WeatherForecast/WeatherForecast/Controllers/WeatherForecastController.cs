@@ -19,7 +19,7 @@ namespace WeatherForecast.Controllers
         }
 
         [HttpGet]
-        [Route("{days?}")]
+        [Route("{days}")]
         public IEnumerable<WeatherForecast> Get(int? days = 0)
         {
             var numberOfDays = (days == null || days == 0) ? 5 : days;
