@@ -44,6 +44,20 @@ namespace WeatherForecast.Controllers
             return Ok(result); // 200 OK
         }
 
+        [HttpGet]
+        [Route("/data/{filepath:regex(^([[a-zA-Z]]\\:|\\\\\\\\[[^\\/\\\\:*?\"<>|]]+\\\\[[^\\/\\\\:*?\"<>|]]+)(\\\\[[^\\/\\\\:*?\"<>|]]+)+(\\.[[^\\/\\\\:*?\"<>|]]+)$)}")]
+        public ActionResult<string> GetData(string filepath)
+        {
+            var filename = Path.GetFileName(filepath);
+
+            if (string.IsNullOrEmpty(filename))
+            {
+                return BadRequest(); // 400 Bad Request
+            }
+
+            return Ok(filename); // 200 OK
+        }
+
         private IEnumerable<WeatherForecast> GetWeatherData(int? days)
         {
             var numberOfDays = (days == null || days == 0) ? 5 : days;
