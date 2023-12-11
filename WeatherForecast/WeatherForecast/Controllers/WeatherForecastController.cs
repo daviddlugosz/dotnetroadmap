@@ -19,13 +19,29 @@ namespace WeatherForecast.Controllers
         }
 
         [HttpGet("{days:range(1,10)}")]
-        public IEnumerable<WeatherForecast> Get(int minTemp, int maxTemp, int? days = 0)
+        public ActionResult<IEnumerable<WeatherForecast>> Get(int minTemp, int maxTemp, int? days = 0)
         {
             var weatherData = GetWeatherData(days);
 
-            return weatherData
+            return Ok(weatherData
                 .Where(forecast => forecast.TemperatureC >= minTemp && forecast.TemperatureC <= maxTemp)
-                .ToList();
+                .ToList()); // 200 OK
+        }
+
+        [HttpGet]
+        [Route("/summary{date:regex(^\\d{{4}}\\-(0[[1-9]]|1[[012]])\\-(0[[1-9]]|[[12]][[0-9]]|3[[01]])$)}")]    // constraint to a route template application (using ReGex expression). Query with string parameter not matching 'yyyy-MM-dd' date template will not hit this endpoint at all.
+        public ActionResult<WeatherForecast> Get(string date)
+        {
+            var weatherData = GetWeatherData(31);
+
+            var result = weatherData.FirstOrDefault(day => day.Date == DateOnly.ParseExact(date, "yyyy-MM-dd"));
+
+            if (result == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+
+            return Ok(result); // 200 OK
         }
 
         private IEnumerable<WeatherForecast> GetWeatherData(int? days)
