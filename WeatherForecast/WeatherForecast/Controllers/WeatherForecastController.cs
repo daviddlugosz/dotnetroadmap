@@ -29,7 +29,7 @@ namespace WeatherForecast.Controllers
         }
 
         [HttpGet]
-        [Route("/summary{date:regex(^\\d{{4}}\\-(0[[1-9]]|1[[012]])\\-(0[[1-9]]|[[12]][[0-9]]|3[[01]])$)}")]    // constraint to a route template application (using ReGex expression). Query with string parameter not matching 'yyyy-MM-dd' date template will not hit this endpoint at all.
+        [Route("/summary/{date:regex(^\\d{{4}}\\-(0[[1-9]]|1[[012]])\\-(0[[1-9]]|[[12]][[0-9]]|3[[01]])$)}")]    // constraint to a route template application (using ReGex expression). Query with string parameter not matching 'yyyy-MM-dd' date template will not hit this endpoint at all.
         public ActionResult<WeatherForecast> Get(string date)
         {
             var weatherData = GetWeatherData(31);
