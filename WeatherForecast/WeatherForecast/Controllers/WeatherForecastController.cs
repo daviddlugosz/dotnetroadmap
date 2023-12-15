@@ -24,7 +24,8 @@ namespace WeatherForecast.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             var days = _configuration.GetValue<int>("WeatherSettings:ForecastCount");
-            var secretSummaryOverride = _configuration.GetValue<string>("Secret:SummaryOverride");
+            //var secretSummaryOverride = _configuration.GetValue<string>("Secret:SummaryOverride");
+            var secretSummaryOverride = _configuration.GetValue<string>("EnvVarForecastCount");
 
             return Enumerable.Range(1, days).Select(index => new WeatherForecast
             {
