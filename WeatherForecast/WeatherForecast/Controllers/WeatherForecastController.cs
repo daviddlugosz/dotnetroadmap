@@ -24,14 +24,14 @@ namespace WeatherForecast.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             var days = _configuration.GetValue<int>("WeatherSettings:ForecastCount");
-            var summaryOverride = _configuration.GetValue<string>("WeatherSettings:SummaryOverride");
+            var secretSummaryOverride = _configuration.GetValue<string>("Secret:SummaryOverride");
 
             return Enumerable.Range(1, days).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 //Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-                Summary = summaryOverride
+                Summary = secretSummaryOverride
             })
             .ToArray();
         }
