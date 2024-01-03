@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using WeatherForecast.Identity;
 
 namespace WeatherForecast.Controllers
 {
@@ -11,6 +12,12 @@ namespace WeatherForecast.Controllers
     {
         private const string TokenSecret = "ForTheLoveOfGoodStoreAndLoadThisSecurely";
         private static readonly TimeSpan TokenLifetime = TimeSpan.FromHours(8);
+        private readonly IConfiguration _configuration;
+
+        public IdentityController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         [HttpPost("token")]
         public IActionResult GenerateToken([FromBody]TokenGenerationRequest request)
@@ -45,8 +52,8 @@ namespace WeatherForecast.Controllers
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.Add(TokenLifetime),
-                Issuer = "someIssuer",
-                Audience = "someAudience",
+                Issuer = _configuration["JwtSettings:Issuer"],
+                Audience = _configuration["JwtSettings:Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)   //'HmacSha256' aka 'HS256'
             };
 

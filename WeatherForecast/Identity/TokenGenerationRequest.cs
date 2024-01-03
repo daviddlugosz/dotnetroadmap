@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace WeatherForecast
+namespace WeatherForecast.Identity
 {
     public class TokenGenerationRequest
     {

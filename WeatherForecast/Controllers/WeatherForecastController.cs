@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WeatherForecast.Identity;
 
 namespace WeatherForecast.Controllers
 {
@@ -15,6 +16,7 @@ namespace WeatherForecast.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("GetPublicData")]
         public string GetPublicData()
@@ -27,6 +29,14 @@ namespace WeatherForecast.Controllers
         public string GetPrivateData()
         {
             return "PRIVATE DATA";
+        }
+
+        [Authorize(Policy = IdentityData.AdminUserPolicyName)]
+        [HttpGet]
+        [Route("GetAdminData")]
+        public string GetAdminData()
+        {
+            return "!!! ADMIN DATA !!!";
         }
     }
 }
